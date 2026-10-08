@@ -1,0 +1,18 @@
+node_modules/
+npm-debug.log*
+*.log
+# 代码快照 (tools/snapshot.sh 生成), 属于本机备份, 不进版本库
+.snapshots/
+# 进程崩溃转储, 动辄几个 G, 绝不能进版本库
+core
+core.*
+*.core
+audit-fails.json
+.DS_Store
+Thumbs.db
+.env
+.env.local
+data/
+coverage/
+.vscode/
+.idea/

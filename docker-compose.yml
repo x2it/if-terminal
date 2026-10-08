@@ -1,0 +1,14 @@
+services:
+  if-terminal:
+    build: .
+    image: if-terminal:1.0.0
+    container_name: if-terminal
+    ports:
+      - "8787:8787"
+    environment:
+      PORT: 8787
+      TZ: Asia/Shanghai
+      # 公网部署务必设置 ACCESS_CODE, 否则 /api/agent 对所有人开放
+      ACCESS_CODE: ""
+      CORS_ORIGIN: "*"
+    restart: unless-stopped

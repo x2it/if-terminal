@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>IF TERMINAL · 极简全球金融终端</title>
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#06090f">
+<meta name="color-scheme" content="dark light">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="IF TERMINAL">
+<link rel="apple-touch-icon" href="/icons/icon-180.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2306090f'/%3E%3Crect x='6' y='14' width='4' height='12' fill='%23ff5757'/%3E%3Crect x='14' y='8' width='4' height='18' fill='%23ffb02e'/%3E%3Crect x='22' y='12' width='4' height='14' fill='%231fc98e'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <div id="topbar">
+    <div id="brand"><b>IF TERMINAL</b><span>If 机会 · Then 策略</span></div>
+    <button class="tbtn" id="btn-market" title="市场过滤 (快捷键 1-7)">市场：全部</button>
+    <button class="tbtn" id="btn-layout" title="布局 (Ctrl+K 更多)">布局：盯盘</button>
+    <button class="tbtn" id="btn-edit" title="编辑布局 (E)">编辑</button>
+    <button class="tbtn" id="btn-tv" title="大屏轮播 (T)">大屏</button>
+    <button class="tbtn" id="btn-tts" title="语音播报">语音</button>
+    <button class="tbtn" id="btn-theme" title="切换主题 (深色 / 浅色)">主题</button>
+    <button class="tbtn" id="btn-upred" title="涨跌配色 (中式红涨 / 西式绿涨)">红涨</button>
+    <button class="tbtn" id="btn-lock" title="配置锁: 防止他人或自己改乱设置">未锁</button>
+    <button class="tbtn" id="btn-install" title="安装为桌面应用 (PWA)" style="display:none">安装</button>
+    <button class="tbtn" id="btn-help" title="快捷键 (?)">帮助</button>
+    <div id="clock">--:--:--</div>
+    <div id="conn" title="数据连接"></div>
+  </div>
+
+  <div id="tape"><div id="tape-track"></div></div>
+  <div id="grid"></div>
+
+  <div id="statusbar">
+    <span id="st-left">连接中…</span>
+    <span id="st-mid"></span>
+    <span id="st-right">数据仅供参考 · 不构成投资建议</span>
+  </div>
+
+  <div id="palette">
+    <div id="palette-box">
+      <input id="palette-input" placeholder="搜索命令 / 品种 / 卡片… (回车执行, Esc 关闭)">
+      <div id="palette-list"></div>
+    </div>
+  </div>
+
+  <div id="help-overlay"><div id="help-box">
+    <div class="help-title">IF TERMINAL · 快捷键</div>
+    <div class="help-grid" id="help-grid"></div>
+    <div class="help-foot">If 机会发现 · Then 策略执行</div>
+  </div></div>
+
+  <div id="announce"><div id="announce-text"></div></div>
+  <div id="toasts"></div>
+  <div id="tip"></div>
+  <div id="tv-hint"></div>
+
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>

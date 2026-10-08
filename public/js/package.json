@@ -1,0 +1,4 @@
+{
+  "//": "public/js 下的 .js 全都是 ES module。package.json 只是为了让 node 能直接 import 它们跑单测 (test/state.test.mjs), 浏览器不读这个文件。",
+  "type": "module"
+}

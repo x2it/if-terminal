@@ -1,0 +1,48 @@
+{
+  "name": "if-terminal",
+  "version": "1.0.0",
+  "description": "IF TERMINAL · 极简全球金融终端 — 单文件服务端 + 纯前端, 零 npm 依赖, 支持 PWA 安装, 可被任意 Agent 驱动",
+  "keywords": [
+    "terminal",
+    "finance",
+    "stock",
+    "crypto",
+    "market",
+    "dashboard",
+    "sse",
+    "pwa",
+    "zero-dependency",
+    "agent"
+  ],
+  "license": "MIT",
+  "author": "知行工作室 <support@w3b.pub>",
+  "homepage": "https://github.com/x2it/if-terminal#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/x2it/if-terminal.git"
+  },
+  "bugs": {
+    "url": "https://github.com/x2it/if-terminal/issues"
+  },
+  "main": "server.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test",
+    "icons": "python tools/gen-icons.py"
+  },
+  "files": [
+    "server.js",
+    "public/",
+    "tools/",
+    "docs/",
+    "README.md",
+    "README.en.md",
+    "AGENT-API.md",
+    "LICENSE"
+  ],
+  "dependencies": {},
+  "private": false
+}
