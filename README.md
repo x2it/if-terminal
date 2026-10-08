@@ -1,6 +1,7 @@
 # IF TERMINAL · 极简全球金融终端
 
 > **If 机会 · Then 策略** —— 盒子 · 卡片 · 插件 · Agent 开放 · 大屏/多屏/移动端 · 零成本
+<img src="https://raw.githubusercontent.com/x2it/if-terminal/main/banner.png" alt="IF TERMINAL · 极简全球金融终端" width="100%">
 
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
 ![node](https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg)
@@ -14,6 +15,7 @@
 全部能力收敛为一条可被外部 Agent 驱动的指令总线。
 
 **零 npm 依赖、零构建步骤、零 API Key。** 克隆下来 `node server.js` 就能跑。
+**IF TERMINAL** is a minimal **single-file financial terminal** for global markets: watchlists, heatmaps, cross-market signal radar, quant backtesting and a card/plugin system, all driven through one Agent-commandable instruction bus. Zero npm dependencies, zero build steps, zero API keys — clone it, run `node server.js`, done.
 
 ![桌面端](docs/screenshots/terminal-desktop.png)
 <p align="center"><img src="docs/screenshots/terminal-mobile.png" width="320" alt="移动端"></p>
@@ -285,6 +287,6 @@ Agent API 完全开放；量化回测沙箱用 `new Function` 执行你输入的
 
 ## 许可证
 
-[MIT](LICENSE) © 2026 知行工作室
+[MIT](LICENSE) © 2026 知行工作室 Zhixing Studio · [https://w3b.pub/](https://w3b.pub/) · support@w3b.pub
 
 <sub>[English](README.en.md)</sub>
