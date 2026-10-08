@@ -8,6 +8,8 @@
 ![build](https://img.shields.io/badge/build-none-lightgrey.svg)
 ![pwa](https://img.shields.io/badge/PWA-installable-success.svg)
 
+> 🔗 **Live Demo → [if.app.workbuddy.host](https://if.app.workbuddy.host/)** — no deploy, no setup, click and go. **Real-time market data, not mocks.**
+
 A **single-file server + pure frontend** markets terminal: global watchlist, treemap heatmap, correlation matrix,
 signal radar and strategy backtesting — every capability collapsed into one instruction bus that any external
 agent can drive.
