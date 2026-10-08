@@ -1,6 +1,7 @@
 # IF TERMINAL · A Minimal Global Markets Terminal
 
 > **If opportunity · Then strategy** — boxes · cards · plugins · agent-open · TV / multi-screen / mobile · zero cost
+<img src="https://raw.githubusercontent.com/x2it/if-terminal/main/banner.png" alt="IF TERMINAL banner" width="100%">
 
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
 ![node](https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg)
@@ -190,6 +191,6 @@ Market data comes from free third-party endpoints and may be delayed, rate-limit
 
 ## License
 
-[MIT](LICENSE) © 2026 知行工作室
+[MIT](LICENSE) © 2026 知行工作室 Zhixing Studio · [https://w3b.pub/](https://w3b.pub/) · support@w3b.pub
 
 <sub>[中文](README.md)</sub>
