@@ -491,6 +491,10 @@ async function klineSinaFutures(code, limit) {
   const symbol = code.replace(/^hf_/, '');
   const txt = await get(`https://stock2.finance.sina.com.cn/futures/api/jsonp.php/var%20t=/GlobalFuturesService.getGlobalFuturesDailyKLine?symbol=${symbol}`, { headers: { Referer: 'https://finance.sina.com.cn' } });
   const arr = unwrapJsonp(txt, code, '期货');   // 注意: unwrapJsonp 内部已做过 JSON.parse, 这里不能再包一层
+  /* unwrapJsonp 把上游 "var t=(null)" 解析成 JS 的 null (而非抛错), 直接 .slice 会崩出
+   * "Cannot read properties of null" 的内部堆栈。无效代码 (如 AU0 主力连续) 上游本就返回 null,
+   * 这里显式转为友好错误, 而不是把实现细节暴露给调用方。 */
+  if (!Array.isArray(arr) || !arr.length) throw new Error(`期货K线暂无数据 (${code})`);
   const bars = arr.slice(-(limit || 300)).map(r => ({
     t: +new Date(r.date + 'T00:00:00+08:00'), o: +r.open, h: +r.high, l: +r.low, c: +r.close, v: +r.volume || 0,
   }));
@@ -503,6 +507,7 @@ async function klineSinaFutures(code, limit) {
 async function klineSinaForex(code, limit) {
   const txt = await get(`https://vip.stock.finance.sina.com.cn/forex/api/jsonp.php/var%20t=/NewForexService.getDayKLine?symbol=${code}`, { headers: { Referer: 'https://finance.sina.com.cn' } });
   const s = unwrapJsonp(txt, code, '外汇');
+  if (typeof s !== 'string' || !s.trim().length) throw new Error(`外汇K线暂无数据 (${code})`);
   const rows = s.split('|').filter(Boolean).slice(-(limit || 300));
   const bars = rows.map(r => {
     const [d, o, a, b, c] = r.split(',');

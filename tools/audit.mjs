@@ -60,16 +60,25 @@ function checkPeriodTruth(sym, period, bars) {
   if (period === 'min' || period === '1M') return;
   const exp = EXPECT_MS[period];
   if (!exp || bars.length < 3) return;
-  // 日/周级会跳过周末与休市日, 间隔本就不等距, 容差放宽到 [0.9, 4] 倍
+  /* 日/周级间隔本就不等距: 日线跳周末与休市日; 周线以"本周最后一个交易日"标注,
+   * 遇国庆/春节等长假, 相邻两根实际只隔 4~5 天(实测 2020-12-31 / 2021-02-10)。
+   * 下限必须放宽到 0.6 倍, 否则真实周线会被误判成"周期不真实"。 */
   const dayish = period === '1d' || period === '1w';
   let suspicious = 0;
   // 末根 K 线可能尚未收完(时间戳为当前), 排除它再比对间隔
   for (let i = 1; i < Math.min(bars.length - 1, 6); i++) {
     const gap = bars[i].t - bars[i - 1].t;
-    const ok = dayish ? (gap >= exp * 0.9 && gap <= exp * 4) : Math.abs(gap - exp) <= exp * 0.4;
+    const ok = dayish ? (gap >= exp * 0.6 && gap <= exp * 4) : Math.abs(gap - exp) <= exp * 0.4;
     if (!ok) suspicious++;
   }
-  if (suspicious >= 2) bad('period', `${sym} ${period}`, `周期不真实: 期望间隔${exp}ms, 实际样本 ${bars.slice(0, 3).map((b) => b.t).join('/')}`);
+  // 判定用首尾跨度而非逐根: 假期造成的单根短间隔不代表周期错误,
+  // 只要整体跨度仍与周期匹配就应放行
+  if (suspicious >= 2) {
+    const span = (bars[Math.min(4, bars.length - 1)].t - bars[0].t) / (Math.min(4, bars.length - 1));
+    if (Math.abs(span - exp) > exp * 0.4) {
+      bad('period', `${sym} ${period}`, `周期不真实: 期望~${exp}ms, 实测跨度~${Math.round(span)}ms, 样本 ${bars.slice(0, 3).map((b) => b.t).join('/')}`);
+    }
+  }
 }
 
 function checkBars(sym, period, d) {
