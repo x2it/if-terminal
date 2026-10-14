@@ -291,6 +291,6 @@ Agent API 完全开放；量化回测沙箱用 `new Function` 执行你输入的
 
 ## 许可证
 
-[MIT](LICENSE) © 2026 知行工作室 Zhixing Studio · [https://w3b.pub/](https://w3b.pub/) · support@w3b.pub
+[MIT](LICENSE) © 2026 知行工作室 · [https://w3b.pub/](https://w3b.pub/) · support@w3b.pub
 
 <sub>[English](README.en.md)</sub>

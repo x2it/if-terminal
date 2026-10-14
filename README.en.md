@@ -195,6 +195,6 @@ Market data comes from free third-party endpoints and may be delayed, rate-limit
 
 ## License
 
-[MIT](LICENSE) © 2026 知行工作室 Zhixing Studio · [https://w3b.pub/](https://w3b.pub/) · support@w3b.pub
+[MIT](LICENSE) © 2026 知行工作室 · [https://w3b.pub/](https://w3b.pub/) · support@w3b.pub
 
 <sub>[中文](README.md)</sub>
