@@ -35,11 +35,11 @@ export const defaults = () => clone(DEFAULTS);
 
 /* ---------- 重置作用域: 既能一键全恢复, 也能只回滚某一类 ---------- */
 export const RESET_SCOPES = [
-  { key: 'all',       label: '全部设置', keys: PERSIST_KEYS,                   desc: '自选 / 布局 / 预警 / 主题 / 配色 / 过滤 全部恢复出厂' },
+  { key: 'all',       label: '全部设置', keys: PERSIST_KEYS,                   desc: '自选 / 布局 / 预警 / 昼夜 / 配色 / 过滤 全部恢复出厂' },
   { key: 'watchlist', label: '自选列表', keys: ['watchlist', 'selected'],       desc: '恢复 14 个默认自选, 并回到 BTC' },
   { key: 'layout',    label: '布局',     keys: ['layoutName', 'customLayout'],  desc: '回到盯盘布局, 清除自定义排序与尺寸' },
   { key: 'alerts',    label: '预警',     keys: ['alerts'],                      desc: '清空全部价格预警' },
-  { key: 'view',      label: '外观',     keys: ['theme', 'upRed'],              desc: '暗色主题 + 红涨绿跌' },
+  { key: 'view',      label: '外观',     keys: ['theme', 'upRed'],              desc: '恢复暗色 + 红涨绿跌' },
   { key: 'filter',    label: '市场过滤', keys: ['market', 'selected'],          desc: '清除全局市场过滤' },
 ];
 export const scopeKeys = k => (RESET_SCOPES.find(s => s.key === k) || RESET_SCOPES[0]).keys;

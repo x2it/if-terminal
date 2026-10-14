@@ -90,29 +90,51 @@ registerCard({
         symSel.append(h('option', { value: s }, symName(s))));
       symSel.value = S.selected;
     }
+    let lastEq = [];
     function drawEquity(eq) {
+      lastEq = eq || [];
       const r = cvBox.getBoundingClientRect();
       if (r.width < 20) return;
       const dpr = devicePixelRatio || 1;
       cv.width = r.width * dpr; cv.height = r.height * dpr;
       const g = cv.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0);
       g.clearRect(0, 0, r.width, r.height);
-      if (!eq.length) return;
-      const vs = eq.map(e => e.v);
+      if (!lastEq.length) return;
+      const vs = lastEq.map(e => e.v);
       const min = Math.min(...vs), max = Math.max(...vs), rng = (max - min) || 1;
       g.beginPath();
-      eq.forEach((e, i) => {
-        const x = i / (eq.length - 1) * (r.width - 8) + 4;
-        const y = r.height - 4 - (e.v - min) / rng * (r.height - 12);
-        i ? g.lineTo(x, y) : g.moveTo(x, y);
-      });
-      const up = vs[vs.length - 1] >= vs[0];
-      g.strokeStyle = up ? (S.upRed ? '#ff5757' : '#1fc98e') : (S.upRed ? '#1fc98e' : '#ff5757');
-      g.lineWidth = 1.4; g.stroke();
-      g.lineTo(r.width - 4, r.height); g.lineTo(4, r.height); g.closePath();
-      g.fillStyle = (up ? (S.upRed ? '#ff5757' : '#1fc98e') : (S.upRed ? '#1fc98e' : '#ff5757')) + '18'; g.fill();
+      /* 单点时 eq.length - 1 === 0, x = 0/0 = NaN —— 路径整体作废, 曲线静默消失。
+       * 至少留 2 个点才谈得上画线; 单点(只回来 1 根K线)画一个居中的圆点,
+       * 让用户看到"有数据但画不出趋势", 而不是一张空白画布。 */
+      if (lastEq.length < 2) {
+        const y = r.height / 2;
+        g.fillStyle = '#5c7288';
+        g.beginPath(); g.arc(r.width / 2, y, 3, 0, Math.PI * 2); g.fill();
+      } else {
+        lastEq.forEach((e, i) => {
+          const x = i / (lastEq.length - 1) * (r.width - 8) + 4;
+          const y = r.height - 4 - (e.v - min) / rng * (r.height - 12);
+          i ? g.lineTo(x, y) : g.moveTo(x, y);
+        });
+        const up = vs[vs.length - 1] >= vs[0];
+        g.strokeStyle = up ? (S.upRed ? '#ff5757' : '#1fc98e') : (S.upRed ? '#1fc98e' : '#ff5757');
+        g.lineWidth = 1.4; g.stroke();
+        g.lineTo(r.width - 4, r.height); g.lineTo(4, r.height); g.closePath();
+        g.fillStyle = (up ? (S.upRed ? '#ff5757' : '#1fc98e') : (S.upRed ? '#1fc98e' : '#ff5757')) + '18'; g.fill();
+      }
       g.fillStyle = '#5c7288'; g.font = '9px monospace'; g.textAlign = 'left';
       g.fillText('净值曲线 (含手续费 5bp)', 6, 12);
+    }
+    /* 布局编辑/窗口缩放会改变卡片尺寸, canvas 不重绘就会把曲线拉伸变形。
+     * ResizeObserver 在现代浏览器可用, 不可用时退化为 window resize 轮询重绘。 */
+    if (typeof ResizeObserver === 'function') {
+      const ro = new ResizeObserver(() => drawEquity(lastEq));
+      ro.observe(cvBox);
+      card.api.destroy = () => ro.disconnect();
+    } else {
+      const onRz = () => drawEquity(lastEq);
+      window.addEventListener('resize', onRz);
+      card.api.destroy = () => window.removeEventListener('resize', onRz);
     }
     async function runBacktest() {
       const sym = symSel.value, period = perSel.value;
@@ -222,8 +244,11 @@ registerCard({
       if (sort === 'sym') pool.sort((a, b) => a.sym.localeCompare(b.sym));
 
       const filtered = fDir || fChg || fAmp || fAmt;
+      /* badge 报的是命中总数, 表格只画前 60 行 —— 不标注的话用户看到"命中 87"
+       * 却数不满, 会以为筛漏了。显式说明显示上限。 */
+      const shown = Math.min(pool.length, 60);
       card.setBadge(filtered
-        ? `命中 ${pool.length}/${total}${skipped ? ` · ${skipped} 只缺振幅` : ''}`
+        ? `命中 ${pool.length}/${total}${shown < pool.length ? ` · 显示前 ${shown}` : ''}${skipped ? ` · ${skipped} 只缺振幅` : ''}`
         : `${total} 只`);
 
       if (!pool.length) {
@@ -402,7 +427,7 @@ registerCard({
       cfg.append(h('div', { class: 'cfg-hd' }, '◈ 当前配置'));
       cfg.append(h('div', { class: 'cfg-note' },
         '自选 ', h('code', {}, String(S.watchlist.length)), ' 只 · 预警 ', h('code', {}, String(S.alerts.length)),
-        ' 条 · 布局 ', h('code', {}, S.layoutName), ' · 主题 ', h('code', {}, S.theme), h('br'),
+        ' 条 · 布局 ', h('code', {}, S.layoutName), ' · 昼夜 ', h('code', {}, S.theme), h('br'),
         diffs.length
           ? h('span', {}, '与出厂默认不同: ', ...diffs.flatMap((k, i) => [i ? ' ' : '', h('code', {}, k)]))
           : '当前与出厂默认完全一致'));

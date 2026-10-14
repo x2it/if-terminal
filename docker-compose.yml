@@ -1,7 +1,7 @@
 services:
   if-terminal:
     build: .
-    image: if-terminal:1.0.0
+    image: if-terminal:2.0.0
     container_name: if-terminal
     ports:
       - "8787:8787"

@@ -9,7 +9,7 @@
 ![build](https://img.shields.io/badge/build-none-lightgrey.svg)
 ![pwa](https://img.shields.io/badge/PWA-installable-success.svg)
 
-> **Current version: 1.0.0** (from [`package.json`](package.json))
+> **Current version: 2.0.0** (from [`package.json`](package.json))
 
 > 🔗 **Live Demo → [if.app.workbuddy.host](https://if.app.workbuddy.host/)** — no deploy, no setup, click and go. **Real-time market data, not mocks.**
 
@@ -94,7 +94,7 @@ WantedBy=multi-user.target
 **Docker**
 
 ```bash
-docker compose up -d            # or: docker build -t if-terminal:1.0.0 . && docker run -p 8787:8787 if-terminal:1.0.0
+docker compose up -d            # or: docker build -t if-terminal:2.0.0 . && docker run -p 8787:8787 if-terminal:2.0.0
 ```
 
 **Reverse proxy (SSE requires buffering off)**
@@ -185,6 +185,8 @@ strategy code with `new Function` inside your browser only. Full threat model an
 
 Issues and PRs are welcome — please read [CONTRIBUTING.md](CONTRIBUTING.md) first: this project is
 **deliberately zero-dependency**. Report vulnerabilities privately, never in a public issue.
+
+Version history: [CHANGELOG.md](CHANGELOG.md).
 
 ## Disclaimer
 

@@ -9,7 +9,7 @@
 ![build](https://img.shields.io/badge/build-none-lightgrey.svg)
 ![pwa](https://img.shields.io/badge/PWA-installable-success.svg)
 
-> **当前版本 / Current version：1.0.0**（源自 [`package.json`](package.json)）
+> **当前版本 / Current version：2.0.0**（源自 [`package.json`](package.json)）
 
 > 🔗 **在线演示 → [if.app.workbuddy.host](https://if.app.workbuddy.host/)** —— 免部署、零配置，点开即用；行情为**真实实时数据**，非演示假数据。
 
@@ -98,7 +98,7 @@ WantedBy=multi-user.target
 **Docker**
 
 ```bash
-docker compose up -d            # 或: docker build -t if-terminal:1.0.0 . && docker run -p 8787:8787 if-terminal:1.0.0
+docker compose up -d            # 或: docker build -t if-terminal:2.0.0 . && docker run -p 8787:8787 if-terminal:2.0.0
 ```
 
 **反向代理（SSE 必须关闭缓冲）**
@@ -281,6 +281,8 @@ Agent API 完全开放；量化回测沙箱用 `new Function` 执行你输入的
 
 欢迎 Issue 与 PR —— 但请先读 [CONTRIBUTING.md](CONTRIBUTING.md)：**本项目刻意保持零依赖**，
 能靠内置能力解决的方案优先。安全问题请走私密渠道，不要开公开 Issue。
+
+版本变更记录见 [CHANGELOG.md](CHANGELOG.md)。
 
 ## 免责声明
 

@@ -1,6 +1,6 @@
 {
   "name": "if-terminal",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "IF TERMINAL · 极简全球金融终端 — 单文件服务端 + 纯前端, 零 npm 依赖, 支持 PWA 安装, 可被任意 Agent 驱动",
   "keywords": [
     "terminal",

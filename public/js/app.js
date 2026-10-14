@@ -224,7 +224,7 @@ function palCommands() {
     { k: '模式', t: '大屏TV模式', d: 'T', run: () => dispatch('tv', { on: !S.tv }) },
     { k: '模式', t: '编辑布局', d: 'E', run: () => dispatch('edit', { on: !S.edit }) },
     { k: '模式', t: '语音播报', d: 'TTS', run: () => dispatch('tts', { on: !S.tts }) },
-    { k: '模式', t: '切换主题', d: '昼/夜', run: () => dispatch('theme', { name: S.theme === 'dark' ? 'light' : 'dark' }) },
+    { k: '模式', t: '昼/夜切换', d: '昼/夜', run: () => dispatch('theme', { name: S.theme === 'dark' ? 'light' : 'dark' }) },
     { k: '模式', t: '红涨绿跌切换', d: '配色约定', run: () => applyUpRed(!S.upRed) },
     { k: '模式', t: '全屏', d: 'F', run: () => dispatch('fullscreen', { on: true }) },
     { k: '模式', t: '刷新数据', d: 'R', run: () => hardRefresh() },

@@ -765,9 +765,14 @@ const server = http.createServer(async (req, res) => {
 
     // ---- K线/分时 ----
     if (p === '/api/kline') {
-      const sym = u.searchParams.get('sym') || '';
-      const period = u.searchParams.get('period') || '1d';
-      const limit = +u.searchParams.get('limit') || 300;
+      /* 入口钳制 limit 与 sym 长度 —— 不钳制的后果是缓存键空间无限:
+       * ck = k|sym|period|limit, 攻击者(或前端 bug)用 ?limit=1,2,3… 轮询即可
+       * 把 600 条的 KLINE_CACHE 全部挤成自己的垃圾键, 真实品种的缓存被逐出,
+       * 之后每个请求都去打上游 —— 免费源扛不住, 全站 K 线一起挂。
+       * 底层各 fetch 函数本来就有钳制, 但入口不钳就等于缓存键先炸了。 */
+      const sym = (u.searchParams.get('sym') || '').slice(0, 64);
+      const period = (u.searchParams.get('period') || '1d').slice(0, 8);
+      const limit = Math.min(Math.max(Math.floor(+u.searchParams.get('limit')) || 300, 5), 1000);
       /* ck / hit 必须声明在 try 之外: catch 里的缓存兜底要用 hit,
        * 写在 try 内部会因块级作用域直接 ReferenceError —— 兜底代码本身崩掉, 比没有兜底更糟。 */
       const ck = `k|${sym}|${period}|${limit}`;
