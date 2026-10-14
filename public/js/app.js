@@ -125,18 +125,24 @@ function wireTopbar() {
   bus.on('upred', on => $('btn-upred').textContent = on ? '红涨' : '绿涨');
   $('btn-help').addEventListener('click', () => $('help-overlay').classList.toggle('show'));
 
-  /* 配置锁按钮: 循环 off → soft(防远程) → hard(全锁定) → off */
-  const lb = $('btn-lock');
-  if (lb) {
-    const LOCK_ICON = { off: '未锁', soft: '防远程', hard: '已锁定' };
+  /* 配置锁: 三态分段控件 (不锁 / 防远程 / 全锁)。
+   * 此前是单个按钮循环切换 —— 要到"全锁"得点两下, 且用户看不出除了当前态还有什么。
+   * 分段控件把三个选项平铺, 一次点击直达, 当前态高亮, 语义自解释。 */
+  const seg = $('lock-seg');
+  if (seg) {
     const paintLock = m => {
-      lb.textContent = LOCK_ICON[m] || LOCK_ICON.off;
-      lb.classList.toggle('locked', m !== 'off');
-      lb.title = '配置锁 · ' + ((LOCK_MODES.find(x => x.key === m) || {}).desc || '');
+      const mode = LOCK_MODES.find(x => x.key === m) || LOCK_MODES[0];
+      for (const b of seg.querySelectorAll('.tseg-b')) {
+        const on = b.dataset.v === mode.key;
+        b.classList.toggle('on', on);
+        b.title = `配置锁 · ${(LOCK_MODES.find(x => x.key === b.dataset.v) || {}).desc || ''}`;
+      }
+      seg.classList.toggle('armed', m !== 'off');
+      seg.title = `配置锁 · ${mode.desc}`;
     };
-    lb.addEventListener('click', () => {
-      const order = ['off', 'soft', 'hard'];
-      setLock(order[(order.indexOf(getLock()) + 1) % order.length]);
+    seg.addEventListener('click', e => {
+      const b = e.target.closest('.tseg-b');
+      if (b) setLock(b.dataset.v);
     });
     bus.on('lock', paintLock);
     paintLock(getLock());

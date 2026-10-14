@@ -25,7 +25,13 @@
     <button class="tbtn" id="btn-tts" title="语音播报">语音</button>
     <button class="tbtn" id="btn-theme" title="昼 / 夜切换 (深色 ⇄ 浅色)">昼/夜</button>
     <button class="tbtn" id="btn-upred" title="涨跌配色 (中式红涨 / 西式绿涨)">红涨</button>
-    <button class="tbtn" id="btn-lock" title="配置锁: 防止他人或自己改乱设置">未锁</button>
+    <!-- 配置锁是三态(不锁/防远程/全锁), 用循环按钮要点两次才到目标态且看不出全貌;
+         分段控件一次点击直达, 当前态高亮。toggle 开关只能表达两态, 这里不适用。 -->
+    <div class="tseg" id="lock-seg">
+      <button class="tseg-b" data-v="off">不锁</button>
+      <button class="tseg-b" data-v="soft">防远程</button>
+      <button class="tseg-b" data-v="hard">全锁</button>
+    </div>
     <button class="tbtn" id="btn-install" title="安装为桌面应用 (PWA)" style="display:none">安装</button>
     <button class="tbtn" id="btn-help" title="快捷键 (?)">帮助</button>
     <div id="clock">--:--:--</div>

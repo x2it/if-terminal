@@ -70,9 +70,26 @@ button { font-family: var(--font); }
   color: var(--amber); border-color: var(--amber-dim);
   background: color-mix(in srgb, var(--amber) 9%, transparent);
 }
-/* 顶栏设置类按钮与主操作之间的一条分隔线, 让"看行情"与"调系统"在视觉上分组 */
-#btn-theme, #btn-upred, #btn-lock { margin-left: 2px; }
+/* ---------- 顶栏设置类按钮与主操作之间的一条分隔线, 让"看行情"与"调系统"在视觉上分组 ---------- */
+#btn-theme, #lock-seg { margin-left: 2px; }
 #btn-upred { border-left: 1px solid var(--line); border-radius: 0 var(--r-s) var(--r-s) 0; padding-left: 12px; }
+/* 配置锁分段控件: 三态平铺, 一次点击直达 (循环按钮要到"全锁"得点两下, 且看不出全貌)。
+ * 容器继承 tbtn 的弱存在感, 激活段用琥珀色与顶部其它开关呼应。 */
+.tseg {
+  display: inline-flex; align-items: stretch; border: 1px solid var(--line);
+  border-radius: var(--r-s); overflow: hidden; flex: none;
+}
+.tseg-b {
+  background: none; color: var(--faint); border: none; padding: 5px 9px;
+  font-size: 11px; cursor: pointer; white-space: nowrap;
+  transition: color var(--tr), background var(--tr);
+}
+.tseg-b + .tseg-b { border-left: 1px solid var(--line); }
+.tseg-b:hover { color: var(--fg); background: var(--panel2); }
+.tseg-b:active { transform: translateY(1px); }
+.tseg-b.on { color: var(--amber); background: color-mix(in srgb, var(--amber) 12%, transparent); }
+.tseg.armed { border-color: var(--amber-dim); }
+.tseg.armed .tseg-b.on { box-shadow: inset 0 0 0 1px var(--amber-dim); }
 #clock { margin-left: auto; color: var(--dim); font-size: 11px; white-space: nowrap; font-variant-numeric: tabular-nums; }
 #conn { width: 7px; height: 7px; border-radius: 50%; background: var(--down); box-shadow: 0 0 8px color-mix(in srgb, var(--down) 45%, transparent); flex: none; }
 #conn.off { background: var(--up); box-shadow: 0 0 8px color-mix(in srgb, var(--up) 45%, transparent); }
@@ -331,7 +348,6 @@ body.tv .card { border-radius: 10px; }
 .cfg-snap .sl { color: var(--dim); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .cfg-snap .sg { color: var(--amber); flex: none; font-size: 9px; }
 .cfg-empty { color: var(--faint); font-size: 10px; padding: 6px; text-align: center; }
-.tbtn.locked { color: var(--amber); border-color: var(--amber-dim); }
 
 /* ---------- 移动端适配 ---------- */
 @media (pointer: coarse) {
@@ -350,6 +366,8 @@ body.tv .card { border-radius: 10px; }
   body { font-size: 13px; }
   #topbar { height: auto; flex-wrap: wrap; padding: 8px; gap: 5px; row-gap: 5px; }
   #topbar .tbtn { padding: 7px 11px; font-size: 12px; }
+  /* 分段控件在窄屏与 tbtn 视觉对齐, 点击目标仍 ≥36px */
+  .tseg-b { padding: 7px 10px; font-size: 12px; }
   #clock { width: 100%; order: 10; text-align: right; font-size: 10px; margin-left: 0; }
   #tape { height: 30px; }
   #grid { grid-auto-rows: 88px; gap: 6px; padding: 6px; }
