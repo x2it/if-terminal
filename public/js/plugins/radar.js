@@ -27,6 +27,11 @@ registerCard({
 
     function render() {
       bd.innerHTML = '';
+      /* 冷启动加载态: 一条行情都没到时, 此前整卡空白只有边框 —— 与"坏了"无法区分。 */
+      if (!Object.keys(S.quotes).length) {
+        bd.append(h('div', { class: 'hint', style: { padding: '28px 0', textAlign: 'center' } }, '正在接入行情…'));
+        return;
+      }
       /* --- 大盘层 --- */
       const mk = h('div', { style: { display: 'flex', flexWrap: 'wrap', gap: '4px', padding: '6px 8px', borderBottom: '1px solid var(--line)' } });
       for (const [group, idxSym] of Object.entries(MARKET_OF)) {

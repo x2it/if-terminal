@@ -1,6 +1,6 @@
 /* 盯盘类插件: 自选列表 · 全球指数 · 涨跌榜 · 全球市场时钟 */
 import { F } from '../fmt.js';
-import { S, bus, selectSymbol, persist, setMarket, guardWrite, toast } from '../core.js';
+import { S, bus, selectSymbol, persist, setMarket, guardWrite, toast, flashPrice } from '../core.js';
 import { h, spark } from '../ui.js';
 import { registerCard } from '../grid.js';
 
@@ -90,6 +90,8 @@ registerCard({
       const Q = q(sym); if (!Q) return;
       // 名称只在"此前是代码兜底、现在有了真名"时补写, 避免每帧重写 DOM
       if (Q.name && r.nm.textContent !== Q.name) r.nm.textContent = Q.name;
+      flashPrice(r.px, r.lastPx, Q.price);   // 价格变了才闪, 方向随涨跌
+      r.lastPx = Q.price;
       r.px.textContent = F.price(Q.price);
       r.pc.textContent = F.pct(Q.pct); r.pc.className = 'num ' + F.cls(Q.pct);
       spark(r.cv, hist(sym), sparkCol(Q.pct));
@@ -130,6 +132,8 @@ registerCard({
       for (const sym of MAJOR) {
         const Q = q(sym), r = map.get(sym); if (!Q) continue;
         r.name.textContent = Q.name || sym.split(':')[1];
+        flashPrice(r.iv, r.lastPx, Q.price);
+        r.lastPx = Q.price;
         r.iv.textContent = F.price(Q.price); r.iv.className = 'iv num ' + F.cls(Q.pct);
         r.ic.textContent = F.pct(Q.pct); r.ic.className = 'ic num ' + F.cls(Q.pct);
       }

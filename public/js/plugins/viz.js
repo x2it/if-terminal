@@ -144,6 +144,13 @@ registerCard({
       const groups = data();
       const HDR = 14, GAP = 3;
       rects = []; aggRects = [];
+      /* 冷启动加载态: 行情未到时 data() 为空, 此前画布整块死黑 —— 用户分不清
+       * "在加载"还是"坏了"。给一行居中的接入提示, 数据到达后 quotes 订阅自然重绘。 */
+      if (!groups.length) {
+        g.fillStyle = cTxt; g.font = '11px monospace'; g.textAlign = 'center'; g.textBaseline = 'middle';
+        g.fillText('正在接入行情…', r.width / 2, r.height / 2);
+        return;
+      }
       const big = groups.map(x => ({ v: x.total, g: x }));
       const placed = [];
       layout(big, 0, 0, r.width, r.height, placed);

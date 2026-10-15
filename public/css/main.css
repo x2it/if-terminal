@@ -13,6 +13,16 @@
   --fg: #dbe4f0; --dim: #667b92; --faint: #42566e;
   --amber: #ffb02e; --amber2: #ffd28a;
   --up: #ff5757; --down: #1fc98e; --flat: #8fa3b8;
+  /* 价格跳动闪烁: 涨/跌方向各一条 keyframes, 颜色取自 --up/--down,
+   * 跟随红涨绿跌配置与主题自动切换。JS 侧只负责加/移 class。 */
+  --flash-up: color-mix(in srgb, var(--up) 24%, transparent);
+  --flash-dn: color-mix(in srgb, var(--down) 24%, transparent);
+  /* 层级阴影: 收敛此前 13 处硬编码 rgba。浅色主题在下方单独调弱 ——
+   * 同样的黑阴影落在白底上会变成脏边, 质感立刻掉档。 */
+  --shadow-1: 0 1px 2px rgba(0,0,0,.22);            /* 卡片静置 */
+  --shadow-2: 0 6px 18px rgba(0,0,0,.30);           /* 卡片 hover */
+  --shadow-3: 0 8px 28px rgba(0,0,0,.55);           /* 浮层: tooltip */
+  --shadow-4: 0 20px 70px rgba(0,0,0,.65);          /* 模态: 帮助/面板 */
   --font: "JetBrains Mono", "Cascadia Code", Consolas, "Courier New", "Microsoft YaHei", monospace;
   --card-hd: 32px;
   --r: 8px;                      /* 卡片圆角 */
@@ -24,7 +34,21 @@ body.theme-light {
   --bg: #f0f2f6; --panel: #ffffff; --panel2: #f5f7fb;
   --line: #dce2ea; --line2: #c3cedb;
   --fg: #1c2937; --dim: #66788c; --faint: #9aaabb; --amber: #b06f00; --amber2: #8a5600;
+  --shadow-1: 0 1px 2px rgba(16,24,40,.06);
+  --shadow-2: 0 6px 16px rgba(16,24,40,.10);
+  --shadow-3: 0 8px 24px rgba(16,24,40,.16);
+  --shadow-4: 0 20px 60px rgba(16,24,40,.22);
 }
+/* 西式绿涨: 交换涨跌变量。此前 applyUpRed 只切了 body class,
+ * CSS 里却没有对应规则 —— 开关是假的, 文字涨跌色纹丝不动
+ * (canvas 图表走 JS 判断所以正常, 反而掩盖了这个洞)。 */
+body.up-green { --up: #1fc98e; --down: #ff5757; }
+/* 价格跳动闪烁: 数字变化瞬间亮一下背景, 600ms 渐出。
+ * 商业终端"实时感"的核心质感 —— 没有它, 数字更新是静默的, 页面像死的。 */
+@keyframes fx-up { 0% { background: var(--flash-up); } 100% { background: transparent; } }
+@keyframes fx-dn { 0% { background: var(--flash-dn); } 100% { background: transparent; } }
+.fx-up { animation: fx-up .6s ease-out; }
+.fx-dn { animation: fx-dn .6s ease-out; }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html, body { height: 100%; }
 body {
@@ -121,9 +145,9 @@ body.tv #topbar, body.tv #tape, body.tv #statusbar { display: none; }
   background: var(--panel); border: 1px solid var(--line); border-radius: var(--r);
   display: flex; flex-direction: column; overflow: hidden; position: relative; min-width: 0; min-height: 0;
   transition: border-color var(--tr), box-shadow var(--tr);
-  box-shadow: 0 1px 2px rgba(0,0,0,.22), inset 0 1px 0 color-mix(in srgb, var(--fg) 4%, transparent);
+  box-shadow: var(--shadow-1), inset 0 1px 0 color-mix(in srgb, var(--fg) 4%, transparent);
 }
-.card:hover { border-color: color-mix(in srgb, var(--line2) 70%, var(--fg) 8%); box-shadow: 0 6px 18px rgba(0,0,0,.30), inset 0 1px 0 color-mix(in srgb, var(--fg) 6%, transparent); }
+.card:hover { border-color: color-mix(in srgb, var(--line2) 70%, var(--fg) 8%); box-shadow: var(--shadow-2), inset 0 1px 0 color-mix(in srgb, var(--fg) 6%, transparent); }
 .card-hd {
   height: var(--card-hd); display: flex; align-items: center; gap: 6px; padding: 0 10px;
   border-bottom: 1px solid var(--line); flex: none; user-select: none;
@@ -212,7 +236,7 @@ canvas.block { width: 100%; height: 100%; display: block; }
   position: fixed; z-index: 200; pointer-events: none; display: none;
   background: color-mix(in srgb, var(--panel) 88%, #000 6%); border: 1px solid var(--line2);
   border-radius: var(--r-s); padding: 7px 11px;
-  font-size: 11px; box-shadow: 0 8px 28px rgba(0,0,0,.55); line-height: 1.8; white-space: nowrap;
+  font-size: 11px; box-shadow: var(--shadow-3); line-height: 1.8; white-space: nowrap;
 }
 
 /* ---------- 命令面板 ---------- */
@@ -220,7 +244,7 @@ canvas.block { width: 100%; height: 100%; display: block; }
 #palette.show { display: flex; }
 #palette-box {
   width: min(560px, 90vw); background: var(--panel); border: 1px solid var(--line2);
-  border-radius: 10px; overflow: hidden; box-shadow: 0 20px 70px rgba(0,0,0,.65);
+  border-radius: 10px; overflow: hidden; box-shadow: var(--shadow-4);
 }
 #palette-input { width: 100%; background: none; border: none; outline: none; color: var(--fg); font-family: var(--font); font-size: 14px; padding: 14px 16px; border-bottom: 1px solid var(--line); }
 .pal-item { padding: 9px 16px; cursor: pointer; display: flex; gap: 10px; align-items: baseline; border-left: 2px solid transparent; transition: background var(--tr); }
@@ -244,7 +268,7 @@ canvas.block { width: 100%; height: 100%; display: block; }
 .toast {
   background: var(--panel2); border: 1px solid var(--line2); border-left: 3px solid var(--amber);
   padding: 10px 14px; border-radius: var(--r-s); font-size: 12px; max-width: 340px;
-  animation: ann-pop .25s ease; box-shadow: 0 6px 24px rgba(0,0,0,.4);
+  animation: ann-pop .25s ease; box-shadow: var(--shadow-3);
 }
 .toast b { color: var(--amber); }
 
@@ -271,7 +295,7 @@ body.popout .card { grid-column: auto; grid-row: auto; }
 /* ---------- 快捷键帮助层 ---------- */
 #help-overlay { position: fixed; inset: 0; z-index: 380; background: rgba(0,0,0,.55); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; }
 #help-overlay.show { display: flex; }
-#help-box { width: min(680px, 92vw); background: var(--panel); border: 1px solid var(--line2); border-radius: 10px; padding: 24px 28px; box-shadow: 0 20px 80px rgba(0,0,0,.65); }
+#help-box { width: min(680px, 92vw); background: var(--panel); border: 1px solid var(--line2); border-radius: 10px; padding: 24px 28px; box-shadow: var(--shadow-4); }
 .help-title { color: var(--fg); letter-spacing: 3px; font-size: 14px; font-weight: 700; margin-bottom: 18px; text-align: center; }
 .help-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 9px 18px; }
 .help-item { display: flex; align-items: baseline; gap: 9px; font-size: 11px; color: var(--dim); }
