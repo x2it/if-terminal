@@ -4,9 +4,11 @@ npm-debug.log*
 # 代码快照 (tools/snapshot.sh 生成), 属于本机备份, 不进版本库
 .snapshots/
 # 进程崩溃转储, 动辄几个 G, 绝不能进版本库
-core
-core.*
-*.core
+# 必须限定在仓库根目录: 此前写成裸 core.* 会把 public/js/core.js 一并匹配掉,
+# 导致这个核心模块从未进版本库 —— 克隆下来的人打开就是白屏 (所有插件都 import 它)。
+/core
+/core.*
+/*.core
 audit-fails.json
 .DS_Store
 Thumbs.db
