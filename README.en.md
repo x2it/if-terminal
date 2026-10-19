@@ -11,7 +11,7 @@
 
 > **Current version: 2.0.0** (from [`package.json`](package.json))
 
-> 🔗 **Live Demo → [if.app.workbuddy.host](https://if.app.workbuddy.host/)** — no deploy, no setup, click and go. **Real-time market data, not mocks.**
+> **Live Demo → [if.app.workbuddy.host](https://if.app.workbuddy.host/)** — no deploy, no setup, click and go. **Real-time market data, not mocks.**
 
 A **single-file server + pure frontend** markets terminal: global watchlist, treemap heatmap, correlation matrix,
 signal radar and strategy backtesting — every capability collapsed into one instruction bus that any external

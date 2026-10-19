@@ -11,7 +11,7 @@
 
 > **当前版本 / Current version：2.0.0**（源自 [`package.json`](package.json)）
 
-> 🔗 **在线演示 → [if.app.workbuddy.host](https://if.app.workbuddy.host/)** —— 免部署、零配置，点开即用；行情为**真实实时数据**，非演示假数据。
+> **在线演示 → [if.app.workbuddy.host](https://if.app.workbuddy.host/)** —— 免部署、零配置，点开即用；行情为**真实实时数据**，非演示假数据。
 
 一个**单文件服务端 + 纯前端**的极简金融终端：全球盯盘 · 热力图 · 市场联动 · 智能信号雷达 · 量化回测，
 全部能力收敛为一条可被外部 Agent 驱动的指令总线。
